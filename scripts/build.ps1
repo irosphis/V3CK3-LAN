@@ -116,6 +116,11 @@ if (-not $PkgConfig) {
     throw "pkg-config.exe was not extracted from $($PinnedAssets['pkgconf'])`n$MsiLogTail"
 }
 $env:PKG_CONFIG = $PkgConfig.FullName
+$KeptEnvironment = @($env:VCPKG_KEEP_ENV_VARS -split ';' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+if ($KeptEnvironment -notcontains 'PKG_CONFIG') {
+    $KeptEnvironment += 'PKG_CONFIG'
+}
+$env:VCPKG_KEEP_ENV_VARS = $KeptEnvironment -join ';'
 Write-Host "Using pinned pkg-config at $($PkgConfig.FullName)"
 
 Invoke-Native -Program $Vcpkg -Arguments @(
