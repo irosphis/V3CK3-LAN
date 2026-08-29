@@ -15,6 +15,13 @@
   "vcpkg": {
     "repository": "https://github.com/microsoft/vcpkg.git",
     "commit": "4746870785b3b4a77556cfc9cf260b4034724e10",
-    "license": "MIT"
+    "license": "MIT",
+    "tool_assets": [
+      {
+        "file": "7z2107-extra.7z",
+        "url": "https://github.com/ip7z/7zip/releases/download/21.07/7z2107-extra.7z",
+        "sha512": "648d894940bcc29951752d7a8fd18c770ee8d4fd944e17f1a52588e51ca8f58375ba48514538f2e1387786fd812bb86f75fd6bdd0892685cdcafb2989942c848"
+      }
+    ]
   }
 }
