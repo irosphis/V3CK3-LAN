@@ -101,14 +101,19 @@ $PkgConfig = Get-ChildItem -Path $PkgConfigRoot -Filter 'pkg-config.exe' -Recurs
     Select-Object -First 1
 if (-not $PkgConfig) {
     New-Item -ItemType Directory -Force -Path $PkgConfigRoot | Out-Null
-    Invoke-Native -Program 'msiexec.exe' -Arguments @(
-        '/a', $PinnedAssets['pkgconf'], '/qn', "TARGETDIR=$PkgConfigRoot"
-    )
+    $MsiLog = Join-Path $BuildRoot 'pkgconf-msi.log'
+    $MsiArguments = '/a "{0}" /qn /L*V "{1}" TARGETDIR="{2}"' -f `
+        $PinnedAssets['pkgconf'], $MsiLog, $PkgConfigRoot
+    $MsiProcess = Start-Process -FilePath 'msiexec.exe' -ArgumentList $MsiArguments -Wait -PassThru
+    if ($MsiProcess.ExitCode -ne 0) {
+        throw "msiexec.exe failed with exit code $($MsiProcess.ExitCode)"
+    }
     $PkgConfig = Get-ChildItem -Path $PkgConfigRoot -Filter 'pkg-config.exe' -Recurse -File |
         Select-Object -First 1
 }
 if (-not $PkgConfig) {
-    throw "pkg-config.exe was not extracted from $($PinnedAssets['pkgconf'])"
+    $MsiLogTail = (Get-Content $MsiLog -Tail 30 -ErrorAction SilentlyContinue) -join "`n"
+    throw "pkg-config.exe was not extracted from $($PinnedAssets['pkgconf'])`n$MsiLogTail"
 }
 $env:PKG_CONFIG = $PkgConfig.FullName
 Write-Host "Using pinned pkg-config at $($PkgConfig.FullName)"
