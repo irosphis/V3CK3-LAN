@@ -18,9 +18,16 @@
     "license": "MIT",
     "tool_assets": [
       {
+        "name": "seven_zip",
         "file": "7z2107-extra.7z",
         "url": "https://github.com/ip7z/7zip/releases/download/21.07/7z2107-extra.7z",
         "sha512": "648d894940bcc29951752d7a8fd18c770ee8d4fd944e17f1a52588e51ca8f58375ba48514538f2e1387786fd812bb86f75fd6bdd0892685cdcafb2989942c848"
+      },
+      {
+        "name": "pkgconf",
+        "file": "pkgconf-x64-3.0.6.msi",
+        "url": "https://distfiles.ariadne.space/pkgconf/pkgconf-x64-3.0.6.msi",
+        "sha512": "86df3630db1dfb9f5d31303b02a7b0cee6bd5fbfa93fd8e50786d0e53d3bb1ff204463fab6341ce2c1a8a6741f02a7b38f828e005120561208b6a14f5743a406"
       }
     ]
   }

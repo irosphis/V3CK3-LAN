@@ -86,12 +86,33 @@ if (-not (Test-Path $Vcpkg)) {
 }
 $VcpkgDownloads = Join-Path $VcpkgRoot 'downloads'
 New-Item -ItemType Directory -Force -Path $VcpkgDownloads | Out-Null
+$PinnedAssets = @{}
 foreach ($Asset in $SourceLock.vcpkg.tool_assets) {
+    $Destination = Join-Path $VcpkgDownloads $Asset.file
     Get-PinnedAsset `
         -Uri $Asset.url `
-        -Destination (Join-Path $VcpkgDownloads $Asset.file) `
+        -Destination $Destination `
         -Sha512 $Asset.sha512
+    $PinnedAssets[$Asset.name] = $Destination
 }
+
+$PkgConfigRoot = Join-Path $BuildRoot 'pkgconf'
+$PkgConfig = Get-ChildItem -Path $PkgConfigRoot -Filter 'pkg-config.exe' -Recurse -File -ErrorAction SilentlyContinue |
+    Select-Object -First 1
+if (-not $PkgConfig) {
+    New-Item -ItemType Directory -Force -Path $PkgConfigRoot | Out-Null
+    Invoke-Native -Program 'msiexec.exe' -Arguments @(
+        '/a', $PinnedAssets['pkgconf'], '/qn', "TARGETDIR=$PkgConfigRoot"
+    )
+    $PkgConfig = Get-ChildItem -Path $PkgConfigRoot -Filter 'pkg-config.exe' -Recurse -File |
+        Select-Object -First 1
+}
+if (-not $PkgConfig) {
+    throw "pkg-config.exe was not extracted from $($PinnedAssets['pkgconf'])"
+}
+$env:PKG_CONFIG = $PkgConfig.FullName
+Write-Host "Using pinned pkg-config at $($PkgConfig.FullName)"
+
 Invoke-Native -Program $Vcpkg -Arguments @(
     'install',
     'protobuf:x64-windows-static',
