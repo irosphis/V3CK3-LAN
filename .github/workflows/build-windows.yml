@@ -14,7 +14,23 @@ jobs:
 
       - name: Build pinned sources
         shell: pwsh
-        run: .\scripts\build.ps1
+        run: |
+          $LogPath = Join-Path $env:RUNNER_TEMP 'build.log'
+          $BuildFailed = $false
+          try {
+            & .\scripts\build.ps1 *>&1 | Tee-Object -FilePath $LogPath
+          }
+          catch {
+            $_ | Out-String | Tee-Object -FilePath $LogPath -Append | Write-Host
+            $BuildFailed = $true
+          }
+
+          if ($BuildFailed -or $LASTEXITCODE -ne 0) {
+            $Message = (Get-Content $LogPath -Tail 80) -join "`n"
+            $Message = $Message.Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Host "::error title=Build log tail::$Message"
+            exit 1
+          }
 
       - name: Package clean runtime
         shell: pwsh
