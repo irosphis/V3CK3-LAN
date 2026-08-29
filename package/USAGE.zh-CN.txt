@@ -1,0 +1,16 @@
+V3CK3 LAN 开源局域网补丁
+
+默认 game-lan.ini 配置为 Victoria 3。用于其他兼容游戏时，请先修改其中的
+game_name、app_id、game_exe 和 launch_arguments。
+
+1. 备份游戏目录中的原版 steam_api64.dll。
+2. 把本压缩包里的所有文件复制到游戏 EXE 与 steam_api64.dll 所在目录，并允许替换。
+3. 每台电脑分别双击 configure-player.cmd。玩家名字和 SteamID 必须互不相同；SteamID 留空会自动生成。
+   如果使用 Hamachi、Radmin VPN 或 Tailscale 等非标准私网地址，虚拟局域网兼容选项请输入 y。
+4. 完全退出 Steam 客户端。
+5. 双击 launch-game-lan.cmd 进入游戏。
+6. 所有人必须使用相同的游戏版本、校验和、Mod 和 TCP/UDP 端口（默认 47584）。
+7. 主机创建多人游戏，其他玩家从局域网大厅加入。
+
+本补丁不会强制 Steam 语言，也不包含 DLC 解锁配置。
+如需恢复原版，请通过 Steam 验证游戏文件完整性。

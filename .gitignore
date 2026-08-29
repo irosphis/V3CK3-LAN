@@ -1,0 +1,20 @@
+# Historical binary patch retained locally for provenance analysis only.
+/binaries/
+/steam_api.dll
+/steam_api64.dll
+
+# Reproducible build inputs and outputs.
+/third_party/
+/build/
+/dist/
+/.vs/
+/out/
+
+# Local player configuration may contain a personal SteamID.
+/local-config/
+
+*.user
+*.suo
+*.VC.db
+
+/pre

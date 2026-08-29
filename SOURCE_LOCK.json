@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "goldberg": {
+    "repository": "https://gitlab.com/Mr_Goldberg/goldberg_emulator.git",
+    "commit": "475342f0d8b2bd7eb0d93bd7cfdd61e3ae7cda24",
+    "commit_date": "2023-05-08T22:36:51-04:00",
+    "commit_subject": "SDK 1.56 and 1.57",
+    "license": "LGPL-3.0-or-later",
+    "reference_ci_job": "4247811310",
+    "reference_sha256": {
+      "experimental/steam_api64.dll": "286f2ed575fb16bba9c451bdf5c8738b5aa6587ec7831830cfae1739c6347edd",
+      "experimental/steamclient64.dll": "7f9fabf5055db099c90b952739e970cd6aab01171d1a980bf96fe9b77885a6a6"
+    }
+  },
+  "vcpkg": {
+    "repository": "https://github.com/microsoft/vcpkg.git",
+    "commit": "4746870785b3b4a77556cfc9cf260b4034724e10",
+    "license": "MIT"
+  }
+}
